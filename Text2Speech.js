@@ -6,7 +6,7 @@ let utter;
 text.oninput = () => {
   utter = new SpeechSynthesisUtterance(text.value);
   utter.pitch = 0.8;
-  utter.rate = 0.5;
+  utter.rate = 0.75;
 }
 
 const speakOut = () => {
