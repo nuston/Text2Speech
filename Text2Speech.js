@@ -1,28 +1,32 @@
-const synth = window.speechSynthesis;
-
-const text = document.querySelector('#text');
 const btn = document.querySelector('#btn');
-const rate = document.querySelector('#rate');
+const text = document.querySelector('#text');
+const speech = window.speechSynthesis;
+let utter;
 
-function speak() {
-  if (synth.speaking) {
-    synth.cancel();
-  }
-  const utterThis = new SpeechSynthesisUtterance(text.value);
-  utterThis.addEventListener('error', () => {
-    console.error('SpeechSynthesisUtterance error');
-    
-  });
-  
-utterThis.rate = rate.value;
-  synth.speak(utterThis);
+text.oninput = () => {
+  utter = new SpeechSynthesisUtterance(text.value);
+  utter.pitch = 0.54;
+  utter.rate = 0.94;
 }
 
-btn.addEventListener('click', speak);
+const speakOut = () => {
+  if (!speech.speaking) {
+    speech.speak(utter);
+    btn.innerHTML = `<span>stop</span>`;
+  } else if (speech.speaking){
+    speech.cancel();
+  }
+  utter.onend = () => btn.innerHTML = `<span>Tap-2-Speak</span>`
+}
 
+btn.onclick = e => {
+  e.preventDefault();
+  speakOut();
+}
 
 //date
 let cYear = new Date().getFullYear();
 
 let copy = document.querySelector('#copy');
 copy.innerHTML = `&copy; ${cYear}`;
+
